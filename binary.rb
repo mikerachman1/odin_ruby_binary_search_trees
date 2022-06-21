@@ -43,29 +43,17 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 
-  def insert(value)
-    node = Node.new(value)
-    current = @root
-    loop do
-      if value < current.value
-        if current.left.nil?
-          current.left = node
-          break
-        end
-        current = current.left
-      elsif value > current.value
-        if current.right.nil?
-            current.right = node
-            break
-          end
-        current = current.right
-      elsif value == current.value
-        puts "no duplicate entries allowed"
-        break
-      end
+  def insert(value, node = @root)
+    return nil if value == node.value
+    if value < node.value
+      node.left.nil? ? node.left = Node.new(value) : insert(value, node.left)
+    else
+      node.right.nil? ? node.right = Node.new(value) : insert(value, node.right)
     end
-    node
   end
+
+  #def delete(value)
+
 end
 
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -73,5 +61,5 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(test_array)
 p tree.array
 
-tree.insert(1008)
+tree.insert(67)
 tree.pretty_print
