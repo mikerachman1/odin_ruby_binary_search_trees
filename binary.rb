@@ -3,8 +3,7 @@
 class Node
   include Comparable
   
-  attr_accessor :left, :right
-  attr_reader :value
+  attr_accessor :left, :right, :value
   
   def initialize(value = nil, left = nil, right = nil)
     @value = value
@@ -52,8 +51,31 @@ class Tree
     end
   end
 
-  #def delete(value)
+  def leftmost_leaf(node)
+    node = node.left until node.left.nil?
 
+    node
+  end
+
+  def delete(value, node = @root)
+    return node if node.nil?
+    
+    if value < node.value
+      node.left = delete(value, node.left)
+    elsif value > node.value
+      node.right = delete(value, node.right)
+    else #if node equals argument
+      #no or one child
+      return node.right if node.left.nil?
+      return node.left if node.right.nil?
+
+      #2 children
+      leftmost_node = leftmost_leaf(node.right)
+      node.value = leftmost_node.value
+      node.right = delete(leftmost_node.value, node.right)
+    end
+    node
+  end
 end
 
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -61,5 +83,5 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(test_array)
 p tree.array
 
-tree.insert(67)
+tree.delete(8)
 tree.pretty_print
