@@ -26,7 +26,6 @@ class Tree
   end
 
   def build_tree(array = @array)
-    #return root node at end
     return nil if array.empty?
     
     mid = (array.size - 1) / 2
@@ -43,12 +42,36 @@ class Tree
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
+
+  def insert(value)
+    node = Node.new(value)
+    current = @root
+    loop do
+      if value < current.value
+        if current.left.nil?
+          current.left = node
+          break
+        end
+        current = current.left
+      elsif value > current.value
+        if current.right.nil?
+            current.right = node
+            break
+          end
+        current = current.right
+      elsif value == current.value
+        puts "no duplicate entries allowed"
+        break
+      end
+    end
+    node
+  end
 end
 
-test_array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 tree = Tree.new(test_array)
 p tree.array
 
-tree.build_tree
+tree.insert(1008)
 tree.pretty_print
