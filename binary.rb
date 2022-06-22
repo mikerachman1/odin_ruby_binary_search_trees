@@ -76,6 +76,19 @@ class Tree
     end
     node
   end
+
+  def find(value, node = root)
+    return "#{value} not included in tree" unless @array.include?(value)
+    return node if value == node.value
+
+    if value < node.value
+      node = find(value, node.left)
+    else
+      node = find(value, node.right)
+    end
+    node
+  end
+
 end
 
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -83,5 +96,6 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(test_array)
 p tree.array
 
-tree.delete(8)
+
 tree.pretty_print
+p tree.find(65)
