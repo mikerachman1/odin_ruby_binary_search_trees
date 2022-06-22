@@ -89,6 +89,34 @@ class Tree
     node
   end
 
+  def level_order_iterative
+    queue = [@root]
+    result = []
+
+    until queue.empty? do
+      node = queue.shift
+      block_given? ? yield(node) : result << node.value
+      queue << node.left unless node.left.nil?
+      queue << node.right unless node.right.nil?
+    end
+    result unless block_given?
+  end
+
+  def level_order_recursive(node = @root, queue = [], result = [])
+    block_given? ? yield(node) : result << node.value unless node.nil?
+
+    queue << node.left unless node.left.nil?
+    queue << node.right unless node.right.nil?
+
+    return if queue.empty?
+
+    level_order_recursive(queue.shift, queue, result)
+    result unless block_given?
+  end
+
+
+
+
 end
 
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -98,4 +126,6 @@ p tree.array
 
 
 tree.pretty_print
-p tree.find(65)
+tree.level_order_iterative do |node|
+    print "#{node.value + 1}, "
+end
