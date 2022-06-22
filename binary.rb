@@ -123,6 +123,24 @@ class Tree
     preorder(node.right, result, &block)
     result
   end
+
+  def inorder(node = @root, result = [], &block)
+    return if node.nil?
+    inorder(node.left, result, &block)
+    yield(node) if block_given?
+    result << node.value
+    inorder(node.right, result, &block)
+    result
+  end
+
+  def postorder(node = @root, result = [], &block)
+    return if node.nil?
+    postorder(node.left, result, &block)
+    postorder(node.right, result, &block)
+    yield(node) if block_given?
+    result << node.value
+    result
+  end
 end
 
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -132,4 +150,4 @@ p tree.array
 
 
 tree.pretty_print
-tree.preorder { |node| print "#{node.value}, "}
+p tree.postorder #{ |node| print "#{node.value}, "}
