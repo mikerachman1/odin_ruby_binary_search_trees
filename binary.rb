@@ -114,9 +114,15 @@ class Tree
     result unless block_given?
   end
 
-
-
-
+  def preorder(node = @root, result = [], &block)
+    return if node.nil?
+    yield(node) if block_given? 
+    result << node.value
+    
+    preorder(node.left, result, &block)
+    preorder(node.right, result, &block)
+    result
+  end
 end
 
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -126,6 +132,4 @@ p tree.array
 
 
 tree.pretty_print
-tree.level_order_iterative do |node|
-    print "#{node.value + 1}, "
-end
+tree.preorder { |node| print "#{node.value}, "}
