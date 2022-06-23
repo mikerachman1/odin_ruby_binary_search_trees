@@ -174,6 +174,16 @@ class Tree
     output
   end
 
+  def balanced?(node = root)
+    return true if node.nil?
+    left = height(node.left)
+    right = height(node.right)
+
+    return true if (left - right).abs <= 1 && balanced?(node.left) && balanced?(node.right)
+
+    false
+  end
+
 
 
 end
@@ -185,4 +195,4 @@ p tree.array
 
 
 tree.pretty_print
-p tree.depth(9)
+p tree.balanced?
