@@ -141,6 +141,41 @@ class Tree
     result << node.value
     result
   end
+
+  def height(node = root)
+    if node.nil?
+      -1
+    else
+      node = find(node) if node.is_a?(Integer)
+      left = height(node.left)
+      right = height(node.right)
+      if left > right
+        1 + left
+      else
+        1 + right
+      end
+
+    end
+  end
+
+  def depth(node = root)
+    output = 0
+    node = find(node) if node.is_a?(Integer)
+    current = @root
+
+    until current.value == node.value
+      if node.value < current.value
+        current = current.left
+      else
+        current = current.right
+      end
+      output += 1
+    end
+    output
+  end
+
+
+
 end
 
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -150,4 +185,4 @@ p tree.array
 
 
 tree.pretty_print
-p tree.postorder #{ |node| print "#{node.value}, "}
+p tree.depth(9)
